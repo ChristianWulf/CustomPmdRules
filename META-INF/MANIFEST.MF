@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: CustomPmdRules
+Bundle-SymbolicName: CustomPmdRules
+Bundle-Version: 1.0.0.qualifier
+Fragment-Host: net.sourceforge.pmd.eclipse.plugin;bundle-version="4.0.5"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Export-Package: de.chw
