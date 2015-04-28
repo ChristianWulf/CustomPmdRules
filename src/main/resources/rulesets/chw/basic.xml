@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<ruleset name="chw's custom rules" xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 http://pmd.sourceforge.net/ruleset_2_0_0.xsd">
+
+	<description>Christian Wulf's custom rules</description>
+
+	<rule class="de.chw.MissingPluralVariableName" name="MissingPluralVariableName" 
+		message="The variable {0} is not named in plural although its type {1} represents a collection.">
+		<description>
+			A variable that represents a collection (incl. set and list) should be named in plural form.
+		</description>
+		<priority>1</priority>
+
+		<example>
+<![CDATA[
+    List<Stage> stages;
+    Collection<String> words;
+]]>
+		</example>
+	</rule>
+
+	<rule class="de.chw.MissingUnitSuffix" name="MissingUnitSuffix" 
+		message="The variable {0} encode the unit in its name although it represents a physical variable.">
+		<description>
+			A variable that represents a physical variable should also encode the unit in its name.
+		</description>
+		<priority>1</priority>
+
+		<example>
+<![CDATA[
+	durationInSec
+	distanceInKm
+]]>
+		</example>
+	</rule>
+</ruleset>
