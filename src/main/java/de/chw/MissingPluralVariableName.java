@@ -17,10 +17,9 @@ import net.sourceforge.pmd.lang.rule.properties.StringMultiProperty;
 
 public class MissingPluralVariableName extends AbstractJavaRule {
 
-	public static final StringMultiProperty COLLECTION_TYPE_NAMES_DESCRIPTOR = new StringMultiProperty("collectionTypeNames",
+	private static final StringMultiProperty COLLECTION_TYPE_NAMES_DESCRIPTOR = new StringMultiProperty("collectionTypeNames",
 			"Collection type names", new String[] { Collection.class.getName(), Set.class.getName(), List.class.getName() }, 1.0f, ',');
-
-	public static final StringMultiProperty EXCLUDED_COLLECTION_TYPE_NAMES_DESCRIPTOR = new StringMultiProperty("excludedCollectionTypeNames",
+	private static final StringMultiProperty EXCLUDED_COLLECTION_TYPE_NAMES_DESCRIPTOR = new StringMultiProperty("excludedCollectionTypeNames",
 			"Excluded collection type names", new String[] { Queue.class.getName(), Stack.class.getName() }, 2.0f, ',');
 
 	private final Set<Class<?>> collectionTypes = new HashSet<Class<?>>();
@@ -64,7 +63,8 @@ public class MissingPluralVariableName extends AbstractJavaRule {
 	public Object visit(final ASTFieldDeclaration node, final Object data) {
 		String variableName = node.getVariableName();
 		Class<?> type = node.getType();
-		addViolationUponMissingPlural(node, data, variableName, type);
+
+		addViolationUponMissingPlural(node, data, variableName, type, node.isArray());
 
 		return data;
 	}
@@ -73,25 +73,41 @@ public class MissingPluralVariableName extends AbstractJavaRule {
 	public Object visit(final ASTLocalVariableDeclaration node, final Object data) {
 		String variableName = node.getVariableName();
 		Class<?> type = node.getTypeNode().getType();
-		addViolationUponMissingPlural(node, data, variableName, type);
+
+		addViolationUponMissingPlural(node, data, variableName, type, node.isArray());
 
 		return data;
 	}
 
-	private void addViolationUponMissingPlural(final AbstractJavaAccessNode node, final Object data, final String variableName, final Class<?> type) {
-		if (null != type) {
-			for (Class<?> excludedCollectionType : excludedCollectionTypes) {
-				if (excludedCollectionType.isAssignableFrom(type)) {
-					return;
-				}
-			}
+	private void addViolationUponMissingPlural(final AbstractJavaAccessNode node, final Object data, final String variableName, final Class<?> type, boolean isArray) {
+		if (null == type) {
+			return;
+		}
 
-			for (Class<?> collectionType : collectionTypes) {
-				if (collectionType.isAssignableFrom(type)) {
-					if (!isPlural(variableName)) {
-						addViolation(data, node, new Object[] { variableName, type.getName() });
-						break;
-					}
+		if (!isArray && type.isPrimitive()) {
+			return;
+		}
+
+		final boolean variableNameIsNotInPluralForm = !isPlural(variableName);
+
+		if (isArray) {
+			if (variableNameIsNotInPluralForm) {
+				addViolation(data, node, new Object[] { variableName, type.getName() });
+				return;
+			}
+		}
+
+		for (Class<?> excludedCollectionType : excludedCollectionTypes) {
+			if (excludedCollectionType.isAssignableFrom(type)) {
+				return;
+			}
+		}
+
+		for (Class<?> collectionType : collectionTypes) {
+			if (collectionType.isAssignableFrom(type)) {
+				if (variableNameIsNotInPluralForm) {
+					addViolation(data, node, new Object[] { variableName, type.getName() });
+					return;
 				}
 			}
 		}

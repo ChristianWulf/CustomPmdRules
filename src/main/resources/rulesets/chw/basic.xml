@@ -22,7 +22,7 @@
 	</rule>
 
 	<rule class="de.chw.MissingUnitSuffix" name="MissingUnitSuffix" 
-		message="The variable {0} encode the unit in its name although it represents a physical variable.">
+		message="The variable {0} does not encode the unit in its name although it represents a physical variable.">
 		<description>
 			A variable that represents a physical variable should also encode the unit in its name.
 		</description>
