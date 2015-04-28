@@ -10,6 +10,7 @@
 		<description>
 			A variable that represents a collection (incl. set and list) should be named in plural form.
 		</description>
+		
 		<priority>1</priority>
 
 		<example>
