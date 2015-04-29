@@ -35,4 +35,27 @@
 ]]>
 		</example>
 	</rule>
+
+	<rule class="de.chw.TypeJavadocShouldStartWith" name="TypeJavadocShouldStartWith" 
+		message="The Javadoc of the type {0} does not start with {1}, but with {2}.">
+		<description>
+			The Javadoc of a type should always start with the given characters.
+		</description>
+		<priority>2</priority>
+	
+		<properties>
+			<property name="firstCharacters" value="Represents " />
+		</properties>
+
+		<example>
+<![CDATA[
+	<properties>
+		<property name="firstCharacters" value="Represents " />
+	</properties>
+	
+	/** Represents a complex number. */
+	class ComplexNumber { ... }
+]]>
+		</example>
+	</rule>
 </ruleset>
