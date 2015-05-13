@@ -36,6 +36,31 @@
 		</example>
 	</rule>
 
+	<rule class="de.chw.NoEmptyLineAfterMethodHeader" name="NoEmptyLineAfterMethodHeader" 
+		message="The body of the method declaration {0} starts with an empty line although it must directly begin with its first statement.">
+		<description>
+			The body of a method declaration must start with a statement, not an empty line.
+		</description>
+		<priority>1</priority>
+
+		<example>
+<![CDATA[
+	wrong:
+	
+	public int size() {
+
+		return size;
+	}
+	
+	right:
+	
+	public int size() {
+		return size;
+	}
+]]>
+		</example>
+	</rule>
+	
 	<rule class="de.chw.TypeJavadocShouldStartWith" name="TypeJavadocShouldStartWith" 
 		message="The Javadoc of the type {0} does not start with {1}, but with {2}.">
 		<description>

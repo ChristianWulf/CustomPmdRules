@@ -12,8 +12,8 @@ public class TypeJavadocShouldStartWith extends AbstractJavaRule {
 
 	private static final String DEFAULT_FIRST_CHARACTERS = "Represents ";
 
-	private static final StringProperty FIRST_CHARACTERS = new StringProperty("firstCharacters",
-			"First characters", DEFAULT_FIRST_CHARACTERS, 1.0f);
+	private static final StringProperty FIRST_CHARACTERS = new StringProperty("firstCharacters", "First characters",
+			DEFAULT_FIRST_CHARACTERS, 1.0f);
 
 	private String firstCharacters;
 
@@ -25,10 +25,11 @@ public class TypeJavadocShouldStartWith extends AbstractJavaRule {
 	}
 
 	@Override
-	public Object visit(ASTCompilationUnit node, Object data) {
+	public Object visit(final ASTCompilationUnit node, final Object data) {
 		firstCharacters = getProperty(FIRST_CHARACTERS);
 		// List<Comment> comments = node.getComments();
-		// ASTClassOrInterfaceDeclaration firstDescendantOfType = comments.get(1).getFirstDescendantOfType(ASTClassOrInterfaceDeclaration.class);
+		// ASTClassOrInterfaceDeclaration firstDescendantOfType =
+		// comments.get(1).getFirstDescendantOfType(ASTClassOrInterfaceDeclaration.class);
 		return super.visit(node, data);
 	}
 
@@ -40,11 +41,13 @@ public class TypeJavadocShouldStartWith extends AbstractJavaRule {
 			if (!commentLines.isEmpty()) {
 				String firstCommentLine = commentLines.get(0);
 				if (!firstCommentLine.startsWith(firstCharacters)) {
-					addViolation(data, node, new Object[] { node.getType().getName(), firstCharacters, firstCommentLine });
+					addViolation(data, node,
+							new Object[] { node.getType().getName(), firstCharacters, firstCommentLine });
 				}
 			}
 		}
 
 		return super.visit(node, data);
 	}
+
 }
