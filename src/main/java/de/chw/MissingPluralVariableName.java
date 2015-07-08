@@ -8,6 +8,8 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.Stack;
 
+import net.sourceforge.pmd.RuleContext;
+import net.sourceforge.pmd.lang.ast.Node;
 import net.sourceforge.pmd.lang.java.ast.ASTCompilationUnit;
 import net.sourceforge.pmd.lang.java.ast.ASTFieldDeclaration;
 import net.sourceforge.pmd.lang.java.ast.ASTLocalVariableDeclaration;
@@ -35,7 +37,7 @@ public class MissingPluralVariableName extends AbstractJavaRule {
 	}
 
 	@Override
-	public Object visit(ASTCompilationUnit node, Object data) {
+	public void apply(final List<? extends Node> nodes, final RuleContext ctx) {
 		List<String> collectionTypeNames = Arrays.asList(super.getProperty(COLLECTION_TYPE_NAMES_DESCRIPTOR));
 		for (String collectionTypeName : collectionTypeNames) {
 			Class<?> collectionType = resolveClassByName(collectionTypeName);
@@ -47,11 +49,10 @@ public class MissingPluralVariableName extends AbstractJavaRule {
 			Class<?> excludedCollectionType = resolveClassByName(excludedCollectionTypeName);
 			excludedCollectionTypes.add(excludedCollectionType);
 		}
-
-		return data;
+		super.apply(nodes, ctx);
 	}
 
-	private Class<?> resolveClassByName(String className) {
+	private Class<?> resolveClassByName(final String className) {
 		try {
 			return Class.forName(className);
 		} catch (ClassNotFoundException e) {
@@ -79,7 +80,7 @@ public class MissingPluralVariableName extends AbstractJavaRule {
 		return data;
 	}
 
-	private void addViolationUponMissingPlural(final AbstractJavaAccessNode node, final Object data, final String variableName, final Class<?> type, boolean isArray) {
+	private void addViolationUponMissingPlural(final AbstractJavaAccessNode node, final Object data, final String variableName, final Class<?> type, final boolean isArray) {
 		if (null == type) {
 			return;
 		}

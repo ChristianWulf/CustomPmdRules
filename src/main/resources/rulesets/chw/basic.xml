@@ -5,12 +5,12 @@
 
 	<description>Christian Wulf's custom rules</description>
 
-	<rule class="de.chw.MissingPluralVariableName" name="MissingPluralVariableName" 
+	<rule class="de.chw.MissingPluralVariableName" name="MissingPluralVariableName"
 		message="The variable {0} is not named in plural although its type {1} represents a collection.">
 		<description>
 			A variable that represents a collection (incl. set and list) should be named in plural form.
 		</description>
-		
+
 		<priority>1</priority>
 
 		<example>
@@ -21,7 +21,7 @@
 		</example>
 	</rule>
 
-	<rule class="de.chw.MissingUnitSuffix" name="MissingUnitSuffix" 
+	<rule class="de.chw.MissingUnitSuffix" name="MissingUnitSuffix"
 		message="The variable {0} does not encode the unit in its name although it represents a physical variable.">
 		<description>
 			A variable that represents a physical variable should also encode the unit in its name.
@@ -36,7 +36,7 @@
 		</example>
 	</rule>
 
-	<rule class="de.chw.NoEmptyLineAfterMethodHeader" name="NoEmptyLineAfterMethodHeader" 
+	<rule class="de.chw.NoEmptyLineAfterMethodHeader" name="NoEmptyLineAfterMethodHeader"
 		message="The body of the method declaration {0} starts with an empty line although it must directly begin with its first statement.">
 		<description>
 			The body of a method declaration must start with a statement, not an empty line.
@@ -60,14 +60,14 @@
 ]]>
 		</example>
 	</rule>
-	
-	<rule class="de.chw.TypeJavadocShouldStartWith" name="TypeJavadocShouldStartWith" 
+
+	<rule class="de.chw.TypeJavadocShouldStartWith" name="TypeJavadocShouldStartWith"
 		message="The Javadoc of the type {0} does not start with {1}, but with {2}.">
 		<description>
 			The Javadoc of a type should always start with the given characters.
 		</description>
 		<priority>2</priority>
-	
+
 		<properties>
 			<property name="firstCharacters" value="Represents " />
 		</properties>
@@ -83,4 +83,33 @@
 ]]>
 		</example>
 	</rule>
+
+	<rule class="de.chw.NonHeaderCommentSize" name="NonHeaderCommentSize"
+		message="Comment is too large">
+		<description>
+Determines whether the dimensions of non-header comments found are within the specified limits.
+    </description>
+		<priority>3</priority>
+		<example>
+<![CDATA[
+/**
+*
+*	too many lines!
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*/
+]]>
+    </example>
+	</rule>
+
 </ruleset>

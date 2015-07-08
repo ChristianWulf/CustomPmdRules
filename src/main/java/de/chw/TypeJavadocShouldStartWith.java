@@ -2,6 +2,8 @@ package de.chw;
 
 import java.util.List;
 
+import net.sourceforge.pmd.RuleContext;
+import net.sourceforge.pmd.lang.ast.Node;
 import net.sourceforge.pmd.lang.java.ast.ASTClassOrInterfaceDeclaration;
 import net.sourceforge.pmd.lang.java.ast.ASTCompilationUnit;
 import net.sourceforge.pmd.lang.java.ast.CommentUtil;
@@ -25,12 +27,9 @@ public class TypeJavadocShouldStartWith extends AbstractJavaRule {
 	}
 
 	@Override
-	public Object visit(final ASTCompilationUnit node, final Object data) {
+	public void apply(final List<? extends Node> nodes, final RuleContext ctx) {
 		firstCharacters = getProperty(FIRST_CHARACTERS);
-		// List<Comment> comments = node.getComments();
-		// ASTClassOrInterfaceDeclaration firstDescendantOfType =
-		// comments.get(1).getFirstDescendantOfType(ASTClassOrInterfaceDeclaration.class);
-		return super.visit(node, data);
+		super.apply(nodes, ctx);
 	}
 
 	@Override
