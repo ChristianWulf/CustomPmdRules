@@ -110,6 +110,7 @@ public class MissingPluralVariableName extends AbstractJavaRule {
 
 		if (isArray) {
 			if (variableNameIsNotInPluralForm) {
+				// FIXME require apache.commons.lang3
 				String typeName = type.getName() + StringUtils.repeat("[]", arrayDepth);
 				addViolation(data, node, new Object[] { variableName, typeName });
 				return;
