@@ -36,7 +36,7 @@ public class MissingPluralVariableName extends AbstractJavaRule {
 		definePropertyDescriptor(COLLECTION_TYPE_NAMES_DESCRIPTOR);
 		definePropertyDescriptor(EXCLUDED_COLLECTION_TYPE_NAMES_DESCRIPTOR);
 
-		setIncludesAndExcludes();
+		updateConfiguration();
 
 		addRuleChainVisit(ASTCompilationUnit.class);
 		addRuleChainVisit(ASTFieldDeclaration.class);
@@ -45,12 +45,12 @@ public class MissingPluralVariableName extends AbstractJavaRule {
 
 	@Override
 	public void apply(final List<? extends Node> nodes, final RuleContext ctx) {
-		setIncludesAndExcludes();
+		updateConfiguration();
 
 		super.apply(nodes, ctx);
 	}
 
-	private void setIncludesAndExcludes() {
+	private void updateConfiguration() {
 		String[] propertyValue;
 
 		propertyValue = super.getProperty(COLLECTION_TYPE_NAMES_DESCRIPTOR);

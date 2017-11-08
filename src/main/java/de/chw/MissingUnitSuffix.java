@@ -26,6 +26,8 @@ public class MissingUnitSuffix extends AbstractJavaRule {
 	public MissingUnitSuffix() {
 		definePropertyDescriptor(PHYSICAL_VARIABLE_NAMES);
 
+		updateConfiguration();
+
 		addRuleChainVisit(ASTCompilationUnit.class);
 		addRuleChainVisit(ASTFieldDeclaration.class);
 		addRuleChainVisit(ASTLocalVariableDeclaration.class);
@@ -33,9 +35,14 @@ public class MissingUnitSuffix extends AbstractJavaRule {
 
 	@Override
 	public void apply(final List<? extends Node> nodes, final RuleContext ctx) {
+		updateConfiguration();
+
+		super.apply(nodes, ctx);
+	}
+
+	private void updateConfiguration() {
 		List<String> configuredPhysicalVariableNames = Arrays.asList(super.getProperty(PHYSICAL_VARIABLE_NAMES));
 		physicalVariableNames.addAll(configuredPhysicalVariableNames);
-		super.apply(nodes, ctx);
 	}
 
 	@Override
@@ -58,7 +65,8 @@ public class MissingUnitSuffix extends AbstractJavaRule {
 		return data;
 	}
 
-	private void addViolationUponMissingUnit(final AbstractJavaAccessNode node, final Object data, final String variableName, final Class<?> type) {
+	private void addViolationUponMissingUnit(final AbstractJavaAccessNode node, final Object data,
+			final String variableName, final Class<?> type) {
 		if (null != type && type.isPrimitive()) {
 			if (physicalVariableNames.contains(variableName)) {
 				addViolation(data, node, new Object[] { variableName });
