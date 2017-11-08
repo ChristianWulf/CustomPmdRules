@@ -7,8 +7,6 @@
 	<artifactId>pmd.ruleset</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 
-	<packaging>bundle</packaging>
-
 	<dependencies>
 		<dependency>
 			<groupId>net.sourceforge.pmd</groupId>
@@ -17,15 +15,5 @@
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.felix</groupId>
-				<artifactId>maven-bundle-plugin</artifactId>
-				<extensions>true</extensions>
-			</plugin>
-		</plugins>
-	</build>
 
 </project>
