@@ -11,6 +11,7 @@ import java.util.Stack;
 
 import de.chw.util.MyStringUtil;
 import net.sourceforge.pmd.RuleContext;
+import net.sourceforge.pmd.RulePriority;
 import net.sourceforge.pmd.lang.ast.Node;
 import net.sourceforge.pmd.lang.java.ast.ASTCompilationUnit;
 import net.sourceforge.pmd.lang.java.ast.ASTFieldDeclaration;
@@ -34,6 +35,8 @@ public class MissingPluralVariableName extends AbstractJavaRule {
 	public MissingPluralVariableName() {
 		definePropertyDescriptor(COLLECTION_TYPE_NAMES_DESCRIPTOR);
 		definePropertyDescriptor(EXCLUDED_COLLECTION_TYPE_NAMES_DESCRIPTOR);
+		
+		setPriority(RulePriority.HIGH);
 
 		updateConfiguration();
 
@@ -153,7 +156,6 @@ public class MissingPluralVariableName extends AbstractJavaRule {
 		}
 
 		// array
-		System.out.println("array? " + type.getComponentType() + ", " + type.isArray());
 		if (type.isArray()) {
 			typeName += "[]";
 			Class<?> ct = type.getComponentType();

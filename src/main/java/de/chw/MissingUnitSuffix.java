@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import net.sourceforge.pmd.RuleContext;
+import net.sourceforge.pmd.RulePriority;
 import net.sourceforge.pmd.lang.ast.Node;
 import net.sourceforge.pmd.lang.java.ast.ASTCompilationUnit;
 import net.sourceforge.pmd.lang.java.ast.ASTFieldDeclaration;
@@ -25,6 +26,8 @@ public class MissingUnitSuffix extends AbstractJavaRule {
 
 	public MissingUnitSuffix() {
 		definePropertyDescriptor(PHYSICAL_VARIABLE_NAMES);
+
+		setPriority(RulePriority.HIGH);
 
 		updateConfiguration();
 
