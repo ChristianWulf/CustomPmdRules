@@ -9,8 +9,7 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.Stack;
 
-import org.apache.commons.lang3.StringUtils;
-
+import de.chw.util.MyStringUtil;
 import net.sourceforge.pmd.RuleContext;
 import net.sourceforge.pmd.lang.ast.Node;
 import net.sourceforge.pmd.lang.java.ast.ASTCompilationUnit;
@@ -110,8 +109,7 @@ public class MissingPluralVariableName extends AbstractJavaRule {
 
 		if (isArray) {
 			if (variableNameIsNotInPluralForm) {
-				// FIXME require apache.commons.lang3
-				String typeName = type.getName() + StringUtils.repeat("[]", arrayDepth);
+				String typeName = type.getName() + MyStringUtil.repeat("[]", arrayDepth);
 				addViolation(data, node, new Object[] { variableName, typeName });
 				return;
 			}
@@ -142,10 +140,13 @@ public class MissingPluralVariableName extends AbstractJavaRule {
 		if (typeParameters.length > 0) {
 			StringBuilder typeNameBuilder = new StringBuilder();
 			typeNameBuilder.append("<");
-			for (TypeVariable<?> typeVariable : typeParameters) {
+			for (int i = 0; i < typeParameters.length; i++) {
+				if (i > 0) {
+					typeNameBuilder.append(",");
+				}
+				TypeVariable<?> typeVariable = typeParameters[i];
 				String genericTypeName = typeVariable.getTypeName();
 				typeNameBuilder.append(genericTypeName);
-				typeNameBuilder.append(",");
 			}
 			typeNameBuilder.append(">");
 			typeName += typeNameBuilder;
