@@ -169,7 +169,8 @@ public class MissingPluralVariableName extends AbstractJavaRule {
 	}
 
 	private boolean isPlural(final String variableName) {
-		if (variableName.endsWith("s")) {
+		String variableNameInLowerCase = variableName.toLowerCase();
+		if (variableNameInLowerCase.endsWith("s")) {
 			return true;
 		}
 		return false;
