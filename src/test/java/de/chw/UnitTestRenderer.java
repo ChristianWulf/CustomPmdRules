@@ -3,12 +3,13 @@ package de.chw;
 import java.io.IOException;
 
 import net.sourceforge.pmd.Report;
-import net.sourceforge.pmd.RuleViolation;
 import net.sourceforge.pmd.renderers.AbstractRenderer;
 import net.sourceforge.pmd.renderers.Renderer;
 import net.sourceforge.pmd.util.datasource.DataSource;
 
-public class UnitTestRenderer extends AbstractRenderer implements Renderer {
+class UnitTestRenderer extends AbstractRenderer implements Renderer {
+
+	private final Report mergedReport = new Report();
 
 	public UnitTestRenderer() {
 		super("UnitTestRenderer", "PMD renderer for unit tests");
@@ -27,14 +28,15 @@ public class UnitTestRenderer extends AbstractRenderer implements Renderer {
 	}
 
 	public void renderFileReport(Report report) throws IOException {
-		for (RuleViolation ruleViolation : report) {
-			String mesage = String.format("%s, %s", ruleViolation.getRule(), ruleViolation.getFilename());
-			System.out.println("UnitTestRenderer.renderFileReport(): " + mesage);
-		}
+		mergedReport.merge(report);
 	}
 
 	public void end() throws IOException {
 		// do nothing
+	}
+
+	public Report getMergedReport() {
+		return mergedReport;
 	}
 
 }
