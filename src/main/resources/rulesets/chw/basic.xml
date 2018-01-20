@@ -112,4 +112,46 @@ Determines whether the dimensions of non-header comments found are within the sp
     </example>
 	</rule>
 
+	<rule class="de.chw.UnitTestMayNotExtendAnything" name="UnitTestMayNotExtendAnything"
+		message="Illegal test class declaration: the test class {0} inherits from another class, namely {1}.">
+		<description>
+			A JUnit test may not extend any common test class such that the actual test methods (@Before, @Test, @After, ...) are encapsulated by the super class.
+			Instead, a test should describe the reader in a declarative way what it tests.
+			If some tests have some behavior in common, move it into a utility class and invoke it in each of these tests. 
+		</description>
+		<priority>1</priority>
+
+		<example>
+<![CDATA[
+	wrong:
+	
+	class FooTest extends AbstractTemplateTest { 
+	
+		// @Before and @Test are predefined in the super class
+	
+		@Override
+		protected List<String> provideInput() {
+			...
+		}
+	
+	}
+	
+	right:
+	
+	class FooTest {
+
+		@Before
+		public void before() {
+			...
+		}
+		
+		@Test
+		public void testSomething() {
+			...
+		}
+	}
+]]>
+		</example>
+	</rule>
+
 </ruleset>
