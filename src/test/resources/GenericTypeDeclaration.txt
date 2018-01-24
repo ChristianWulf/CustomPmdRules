@@ -1,0 +1,16 @@
+import java.util.List;
+import java.util.ArrayList;
+
+public class GenericTypeDeclaration {
+
+	List<Integer> numbers;
+
+	public void testMe() throws Exception {
+		List<String> elements = new ArrayList<String>();
+	}
+
+	public void testDiamond() throws Exception {
+		List<String> elements = new ArrayList<>();
+	}
+
+}

@@ -1,0 +1,12 @@
+import java.util.List;
+import java.util.ArrayList;
+
+public class RawTypeDeclaration {
+
+	List numbers;
+
+	public void testMe() throws Exception {
+		List elements = new ArrayList();
+	}
+
+}
