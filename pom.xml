@@ -16,7 +16,8 @@
 
 	<distributionManagement>
 		<snapshotRepository>
-			<id>the-only-snapshot-repository</id>
+			<id>teetime-deployment</id>
+			<!-- see settings.xml for auth data -->
 			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
 		</snapshotRepository>
 	</distributionManagement>
@@ -83,18 +84,10 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!-- uploads a new release to maven central -->
-			<plugin>
-				<groupId>org.sonatype.plugins</groupId>
-				<artifactId>nexus-staging-maven-plugin</artifactId>
-				<version>1.6.7</version>
-				<extensions>true</extensions>
-				<configuration>
-					<!-- <serverId>snapshot-deployment</serverId> -->
-					<serverId>teetime-deployment</serverId>	<!-- link to auth data -->
-					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
-				</configuration>
-			</plugin>
+			<!-- maven-deploy-plugin is sufficient for us. It allows deployments of 
+				snapshots and releases. -->
+			<!-- nexus-staging-maven-plugin additionally provides staging artifacts, 
+				which are not necessary for us. -->
 		</plugins>
 	</build>
 
