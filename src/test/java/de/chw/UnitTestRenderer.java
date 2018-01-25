@@ -39,7 +39,7 @@ class UnitTestRenderer extends AbstractRenderer implements Renderer {
 	}
 
 	public void startFileAnalysis(DataSource dataSource) {
-		System.out.println("UnitTestRenderer.startFileAnalysis(): " + dataSource);
+		// do nothing
 	}
 
 	public void renderFileReport(Report report) throws IOException {

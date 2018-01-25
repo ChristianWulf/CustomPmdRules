@@ -15,10 +15,11 @@
  */
 package de.chw;
 
-import net.sourceforge.pmd.lang.ast.Node;
+import net.sourceforge.pmd.RuleContext;
+import net.sourceforge.pmd.lang.ast.AbstractNode;
+import net.sourceforge.pmd.lang.java.ast.ASTClassOrInterfaceBody;
 import net.sourceforge.pmd.lang.java.ast.ASTClassOrInterfaceDeclaration;
 import net.sourceforge.pmd.lang.java.ast.ASTClassOrInterfaceType;
-import net.sourceforge.pmd.lang.java.ast.ASTCompilationUnit;
 import net.sourceforge.pmd.lang.java.ast.ASTExtendsList;
 import net.sourceforge.pmd.lang.java.ast.ASTMarkerAnnotation;
 import net.sourceforge.pmd.lang.java.rule.AbstractJavaRule;
@@ -26,7 +27,6 @@ import net.sourceforge.pmd.lang.java.rule.AbstractJavaRule;
 public class UnitTestMayNotExtendAnything extends AbstractJavaRule {
 
 	private static class AstContext {
-		String typeName = "";
 		String typeNameOfSuperClass = "";
 		boolean hasTestAnnotation = false;
 	}
@@ -38,13 +38,52 @@ public class UnitTestMayNotExtendAnything extends AbstractJavaRule {
 	}
 
 	@Override
-	public Object visit(ASTExtendsList node, Object data) {
-		ASTClassOrInterfaceType classType = node.getFirstChildOfType(ASTClassOrInterfaceType.class);
+	public Object visit(ASTClassOrInterfaceDeclaration node, Object data) {
+		AstContext astContext = new AstContext();
 
-		AstContext astContext = (AstContext) data;
-		astContext.typeNameOfSuperClass = classType.getImage();
+		String uniqueKey = buildUniqueKey(node);
+
+		RuleContext ruleContext = (RuleContext) data;
+		ruleContext.setAttribute(uniqueKey, astContext);
 
 		return super.visit(node, data);
+	}
+
+	@Override
+	public Object visit(ASTExtendsList node, Object data) {
+		AbstractNode keyNode = node.getFirstParentOfType(ASTClassOrInterfaceDeclaration.class);
+		String uniqueKey = buildUniqueKey(keyNode);
+		RuleContext ruleContext = (RuleContext) data;
+		AstContext astContext = (AstContext) ruleContext.getAttribute(uniqueKey);
+
+		ASTClassOrInterfaceType classType = node.getFirstChildOfType(ASTClassOrInterfaceType.class);
+		astContext.typeNameOfSuperClass = classType.getImage();
+
+		return null;
+	}
+
+	@Override
+	public Object visit(ASTClassOrInterfaceBody node, Object data) {
+		AbstractNode keyNode = node.getFirstParentOfType(ASTClassOrInterfaceDeclaration.class);
+		String uniqueKey = buildUniqueKey(keyNode);
+		RuleContext ruleContext = (RuleContext) data;
+		AstContext astContext = (AstContext) ruleContext.getAttribute(uniqueKey);
+
+		ASTClassOrInterfaceBody parentClassNode = node.getFirstParentOfType(ASTClassOrInterfaceBody.class);
+
+		// only check the outer class;
+		// don't check inner classes or sibling classes
+		if (parentClassNode != null) {
+			return null;
+		}
+
+		Object result = super.visit(node, data);
+
+		if (!astContext.typeNameOfSuperClass.isEmpty() && astContext.hasTestAnnotation) {
+			addViolation(data, node, new Object[] { keyNode.getImage(), astContext.typeNameOfSuperClass });
+		}
+
+		return result;
 	}
 
 	@Override
@@ -55,42 +94,20 @@ public class UnitTestMayNotExtendAnything extends AbstractJavaRule {
 			// to avoid importing org.junit.Test.
 			final String fullyQualifiedTypeName = type.getName();
 			if (JUNIT_TEST_ANNOTATION_FQN.equals(fullyQualifiedTypeName)) {
-				AstContext astContext = (AstContext) data;
+				AbstractNode keyNode = node.getFirstParentOfType(ASTClassOrInterfaceDeclaration.class);
+				String uniqueKey = buildUniqueKey(keyNode);
+				RuleContext ruleContext = (RuleContext) data;
+				AstContext astContext = (AstContext) ruleContext.getAttribute(uniqueKey);
+
 				astContext.hasTestAnnotation = true;
 				return null;
 			}
 		}
 
-		return super.visit(node, data);
+		return null;
 	}
 
-	@Override
-	public Object visit(ASTCompilationUnit node, Object data) {
-		AstContext astContext = new AstContext();
-
-		Object result = super.visit(node, astContext);
-
-		if (!astContext.typeNameOfSuperClass.isEmpty() && astContext.hasTestAnnotation) {
-			addViolation(data, node, new Object[] { astContext.typeName, astContext.typeNameOfSuperClass });
-		}
-
-		return result;
-	}
-
-	@Override
-	public Object visit(ASTClassOrInterfaceDeclaration node, Object data) {
-		AstContext astContext = (AstContext) data;
-
-		// only check the outer class, not inner classes or sibling classes
-		if (astContext.typeName.isEmpty()) {
-			astContext.typeName = node.getImage();
-		}
-
-		return super.visit(node, data);
-	}
-
-	String getKey(Node node) {
-		ASTCompilationUnit compilationUnit = node.getFirstParentOfType(ASTCompilationUnit.class);
-		return compilationUnit.toString();
+	private String buildUniqueKey(AbstractNode node) {
+		return node.getImage() + "-" + node.getBeginLine() + "-" + node.getEndLine();
 	}
 }

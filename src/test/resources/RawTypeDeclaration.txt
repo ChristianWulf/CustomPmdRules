@@ -5,7 +5,7 @@ public class RawTypeDeclaration {
 
 	List numbers;
 
-	public void testMe() throws Exception {
+	public void testMe(List words) throws Exception {
 		List elements = new ArrayList();
 	}
 

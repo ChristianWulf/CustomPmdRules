@@ -15,6 +15,11 @@
  */
 package de.chw;
 
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+
 import java.util.Iterator;
 
 import org.junit.Test;
@@ -29,18 +34,19 @@ public class UnitTestMayNotExtendAnythingTest {
 		Report report = PmdTester.test(new UnitTestMayNotExtendAnything())
 				.on("ExampleTest.txt", "ExampleTestWithExtends.txt").start();
 
-		for (RuleViolation ruleViolation : report) {
-			String message = String.format("%s, %s, %s", ruleViolation.getRule(), ruleViolation.getFilename(),
-					ruleViolation.getDescription());
-			System.out.println("UnitTestMayNotExtendAnythingTest.testUnitTestAnnotation(): " + message);
-		}
+//		for (RuleViolation ruleViolation : report) {
+//			String message = String.format("%s, %s, %s", ruleViolation.getRule(), ruleViolation.getFilename(),
+//					ruleViolation.getDescription());
+//			System.out.println(UnitTestMayNotExtendAnythingTest.class.getName() + ": " + message);
+//		}
 
 		Iterator<RuleViolation> iter = report.iterator();
 
 		RuleViolation ruleViolation = iter.next();
-//		assertThat(ruleViolation.getClassName(), is(equalTo("ExampleTestWithExtends")));
+		assertThat(ruleViolation.getRule(), is(instanceOf(UnitTestMayNotExtendAnything.class)));
+		assertThat(ruleViolation.getClassName(), is(equalTo("ExampleTestWithExtends")));
 
-		// assertThat(iter.hasNext(), is(false));
+		assertThat(iter.hasNext(), is(false));
 	}
 
 }

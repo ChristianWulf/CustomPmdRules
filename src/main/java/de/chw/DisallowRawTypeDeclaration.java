@@ -16,6 +16,7 @@
 package de.chw;
 
 import net.sourceforge.pmd.lang.java.ast.ASTFieldDeclaration;
+import net.sourceforge.pmd.lang.java.ast.ASTFormalParameter;
 import net.sourceforge.pmd.lang.java.ast.ASTLocalVariableDeclaration;
 import net.sourceforge.pmd.lang.java.ast.ASTType;
 import net.sourceforge.pmd.lang.java.ast.ASTTypeArguments;
@@ -36,7 +37,7 @@ public class DisallowRawTypeDeclaration extends AbstractJavaRule {
 			addViolation(data, node, new Object[] { "local variable", node.getBeginLine(), node.getEndLine() });
 		}
 
-		return super.visit(node, data);
+		return null;
 	}
 
 	@Override
@@ -48,6 +49,19 @@ public class DisallowRawTypeDeclaration extends AbstractJavaRule {
 			addViolation(data, node, new Object[] { "field", node.getBeginLine(), node.getEndLine() });
 		}
 
-		return super.visit(node, data);
+		return null;
 	}
+
+	@Override
+	public Object visit(ASTFormalParameter node, Object data) {
+		ASTType typeNode = node.getTypeNode();
+		ASTTypeArguments typeArguments = typeNode.getFirstDescendantOfType(ASTTypeArguments.class);
+
+		if (typeArguments == null) {
+			addViolation(data, node, new Object[] { "formal parameter", node.getBeginLine(), node.getEndLine() });
+		}
+
+		return null;
+	}
+
 }

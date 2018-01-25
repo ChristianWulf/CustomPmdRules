@@ -5,7 +5,7 @@ public class GenericTypeDeclaration {
 
 	List<Integer> numbers;
 
-	public void testMe() throws Exception {
+	public void testMe(List<String> words) throws Exception {
 		List<String> elements = new ArrayList<String>();
 	}
 

@@ -15,6 +15,11 @@
  */
 package de.chw;
 
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+
 import java.util.Iterator;
 
 import org.junit.Test;
@@ -29,19 +34,30 @@ public class DisallowRawTypeDeclarationTest {
 		Report report = PmdTester.test(new DisallowRawTypeDeclaration())
 				.on("RawTypeDeclaration.txt", "GenericTypeDeclaration.txt").start();
 
-		for (RuleViolation ruleViolation : report) {
-			String message = String.format("%s, %s, %s", ruleViolation.getRule(), ruleViolation.getFilename(),
-					ruleViolation.getDescription());
-			System.out.println(DisallowRawTypeDeclarationTest.class.getName() + ": " + message);
-		}
+//		for (RuleViolation ruleViolation : report) {
+//			String message = String.format("%s, %s, %s", ruleViolation.getRule(), ruleViolation.getFilename(),
+//					ruleViolation.getDescription());
+//			System.out.println(DisallowRawTypeDeclarationTest.class.getName() + ": " + message);
+//		}
 
 		Iterator<RuleViolation> iter = report.iterator();
 
 		RuleViolation ruleViolation = iter.next();
-		// assertThat(ruleViolation.getClassName(),
-		// is(equalTo("ExampleTestWithExtends")));
+		assertThat(ruleViolation.getRule(), is(instanceOf(DisallowRawTypeDeclaration.class)));
+		assertThat(ruleViolation.getClassName(), is(equalTo("RawTypeDeclaration")));
+		assertThat(ruleViolation.getBeginLine(), is(6));
 
-		// assertThat(iter.hasNext(), is(false));
+		ruleViolation = iter.next();
+		assertThat(ruleViolation.getRule(), is(instanceOf(DisallowRawTypeDeclaration.class)));
+		assertThat(ruleViolation.getClassName(), is(equalTo("RawTypeDeclaration")));
+		assertThat(ruleViolation.getBeginLine(), is(8));
+
+		ruleViolation = iter.next();
+		assertThat(ruleViolation.getRule(), is(instanceOf(DisallowRawTypeDeclaration.class)));
+		assertThat(ruleViolation.getClassName(), is(equalTo("RawTypeDeclaration")));
+		assertThat(ruleViolation.getBeginLine(), is(9));
+
+		assertThat(iter.hasNext(), is(false));
 	}
 
 }

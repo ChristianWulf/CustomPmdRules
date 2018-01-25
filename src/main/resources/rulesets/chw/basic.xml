@@ -154,4 +154,44 @@ Determines whether the dimensions of non-header comments found are within the sp
 		</example>
 	</rule>
 
+	<rule class="de.chw.DisallowRawTypeDeclaration" name="DisallowRawTypeDeclaration"
+		message="Illegal raw type usage in the {0} declaration from Line {1} to {2}.">
+		<description>
+			Raw types can lead to runtime errors. Using type parameters (a.k.a. Generics) instead allows the compiler to identify type errors at compile-time.
+		</description>
+		<priority>2</priority>
+
+		<example>
+<![CDATA[
+	wrong:
+	
+	public class RawTypeDeclaration {
+	
+		List numbers;
+	
+		public void testMe(List words) throws Exception {
+			List elements = new ArrayList();
+		}
+	
+	}
+
+	right:
+
+	public class GenericTypeDeclaration {
+	
+		List<Integer> numbers;
+	
+		public void testMe(List<String> words) throws Exception {
+			List<String> elements = new ArrayList<String>();
+		}
+
+		public void testDiamond() throws Exception {
+			List<String> elements = new ArrayList<>();
+		}
+	
+	}
+]]>
+		</example>
+	</rule>
+
 </ruleset>
