@@ -16,7 +16,7 @@
 
 	<distributionManagement>
 		<snapshotRepository>
-			<id>snapshot-repository</id>
+			<id>the-only-snapshot-repository</id>
 			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
 		</snapshotRepository>
 	</distributionManagement>
@@ -59,17 +59,6 @@
 					<compilerArgument>-Xlint</compilerArgument>
 				</configuration>
 			</plugin>
-			<!-- uploads a new release to maven central -->
-			<plugin>
-				<groupId>org.sonatype.plugins</groupId>
-				<artifactId>nexus-staging-maven-plugin</artifactId>
-				<version>1.6.7</version>
-				<extensions>true</extensions>
-				<configuration>
-					<serverId>snapshot-deployment</serverId>
-					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
-				</configuration>
-			</plugin>
 			<!-- Copyright Header -->
 			<plugin>
 				<groupId>com.mycila</groupId>
@@ -93,6 +82,18 @@
 						</goals>
 					</execution>
 				</executions>
+			</plugin>
+			<!-- uploads a new release to maven central -->
+			<plugin>
+				<groupId>org.sonatype.plugins</groupId>
+				<artifactId>nexus-staging-maven-plugin</artifactId>
+				<version>1.6.7</version>
+				<extensions>true</extensions>
+				<configuration>
+					<!-- <serverId>snapshot-deployment</serverId> -->
+					<serverId>teetime-deployment</serverId>	<!-- link to auth data -->
+					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
