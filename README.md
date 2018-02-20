@@ -8,3 +8,18 @@ https://github.com/ChristianWulf/qa-eclipse-plugin
 
 If you insist on using the PMD Eclipse Plugin (from https://github.com/pmd/pmd-eclipse-plugin), 
 we refer to http://www.eclipsezone.com/articles/pmd for details about how to integrate custom PMD rules.
+
+## Download
+Via Maven:
+
+```
+<dependency>
+    <groupId>net.sourceforge.teetime</groupId>
+    <artifactId>pmd.ruleset</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+</dependency>
+```
+
+Via direct download:
+
+https://oss.sonatype.org/content/repositories/snapshots/net/sourceforge/teetime/pmd.ruleset
