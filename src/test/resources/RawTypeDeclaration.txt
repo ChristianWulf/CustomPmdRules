@@ -3,9 +3,13 @@ import java.util.ArrayList;
 
 public class RawTypeDeclaration {
 
+	static class MyList extends ArrayList<Integer> {}
+
+	File file;
 	List numbers;
 
 	public void testMe(List words) throws Exception {
+		MyList myList = new MyList();
 		List elements = new ArrayList();
 	}
 

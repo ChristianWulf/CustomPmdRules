@@ -186,6 +186,8 @@ public class MissingPluralVariableName extends AbstractJavaRule {
 	private boolean isPlural(final String variableName) {
 		String variableNameInLowerCase = variableName.toLowerCase();
 		if (variableNameInLowerCase.endsWith("s")) {
+			// Plural form is difficult to detect when other languages are used as well.
+			// Moreover, there are words whose plural form do not end with "s".
 			return true;
 		}
 		return false;

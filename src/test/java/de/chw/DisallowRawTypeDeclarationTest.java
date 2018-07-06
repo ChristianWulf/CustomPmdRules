@@ -45,17 +45,20 @@ public class DisallowRawTypeDeclarationTest {
 		RuleViolation ruleViolation = iter.next();
 		assertThat(ruleViolation.getRule(), is(instanceOf(DisallowRawTypeDeclaration.class)));
 		assertThat(ruleViolation.getClassName(), is(equalTo("RawTypeDeclaration")));
-		assertThat(ruleViolation.getBeginLine(), is(6));
-
-		ruleViolation = iter.next();
-		assertThat(ruleViolation.getRule(), is(instanceOf(DisallowRawTypeDeclaration.class)));
-		assertThat(ruleViolation.getClassName(), is(equalTo("RawTypeDeclaration")));
-		assertThat(ruleViolation.getBeginLine(), is(8));
-
-		ruleViolation = iter.next();
-		assertThat(ruleViolation.getRule(), is(instanceOf(DisallowRawTypeDeclaration.class)));
-		assertThat(ruleViolation.getClassName(), is(equalTo("RawTypeDeclaration")));
+		assertThat(ruleViolation.getVariableName(), is("numbers"));
 		assertThat(ruleViolation.getBeginLine(), is(9));
+
+		ruleViolation = iter.next();
+		assertThat(ruleViolation.getRule(), is(instanceOf(DisallowRawTypeDeclaration.class)));
+		assertThat(ruleViolation.getClassName(), is(equalTo("RawTypeDeclaration")));
+		assertThat(ruleViolation.getVariableName(), is("words"));
+		assertThat(ruleViolation.getBeginLine(), is(11));
+
+		ruleViolation = iter.next();
+		assertThat(ruleViolation.getRule(), is(instanceOf(DisallowRawTypeDeclaration.class)));
+		assertThat(ruleViolation.getClassName(), is(equalTo("RawTypeDeclaration")));
+		assertThat(ruleViolation.getVariableName(), is("elements"));
+		assertThat(ruleViolation.getBeginLine(), is(13));
 
 		assertThat(iter.hasNext(), is(false));
 	}
