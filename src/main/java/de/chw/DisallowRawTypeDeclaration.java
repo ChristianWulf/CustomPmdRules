@@ -15,8 +15,10 @@
  */
 package de.chw;
 
-import java.lang.reflect.GenericDeclaration;
+import java.lang.reflect.TypeVariable;
 
+import net.sourceforge.pmd.lang.java.ast.ASTClassOrInterfaceType;
+import net.sourceforge.pmd.lang.java.ast.ASTExtendsList;
 import net.sourceforge.pmd.lang.java.ast.ASTFieldDeclaration;
 import net.sourceforge.pmd.lang.java.ast.ASTFormalParameter;
 import net.sourceforge.pmd.lang.java.ast.ASTLocalVariableDeclaration;
@@ -79,10 +81,46 @@ public class DisallowRawTypeDeclaration extends AbstractJavaRule {
 		return null;
 	}
 
+	@Override
+	public Object visit(ASTExtendsList node, Object data) {
+		/*
+		 * ASTType typeNode = node.getFirstChildOfType(ASTType.class);
+		 * 
+		 * boolean isGenericType = isGenericType(typeNode); ASTTypeArguments
+		 * typeArguments = typeNode.getFirstDescendantOfType(ASTTypeArguments.class);
+		 * 
+		 * if (isGenericType && typeArguments == null) { addViolation(data, node, new
+		 * Object[] { "extends type", "", node.getBeginLine(), node.getEndLine() }); }
+		 */
+		return super.visit(node, data);
+	}
+
+	@Override
+	public Object visit(ASTClassOrInterfaceType node, Object data) {
+		//
+		return super.visit(node, data);
+	}
+
 	private boolean isGenericType(ASTType typeNode) {
 		ASTReferenceType referenceType = typeNode.getFirstChildOfType(ASTReferenceType.class);
+		if (referenceType == null) {
+			// type is a primitive type
+			return false;
+		}
+
 		Class<?> type = referenceType.getType();
-		return (type instanceof GenericDeclaration);
+		if (type == null) {
+			ASTClassOrInterfaceType astType = referenceType.getFirstChildOfType(ASTClassOrInterfaceType.class);
+			String message = String.format(
+					"The type '%s' at Line %d could not be resolved, e.g., due to a missing import statement.",
+					astType.getImage(), astType.getBeginLine());
+			// throw new IllegalStateException(message);
+			return false;
+		}
+		TypeVariable<?>[] typeParameters = type.getTypeParameters();
+		return typeParameters.length > 0;
+		// instanceof is not sufficient since Class always extends GenericDeclaration
+		// return (type instanceof GenericDeclaration);
 	}
 
 	private String getFormalParameterName(ASTFormalParameter node) {

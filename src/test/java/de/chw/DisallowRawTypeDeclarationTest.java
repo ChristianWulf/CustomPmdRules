@@ -34,11 +34,13 @@ public class DisallowRawTypeDeclarationTest {
 		Report report = PmdTester.test(new DisallowRawTypeDeclaration())
 				.on("RawTypeDeclaration.txt", "GenericTypeDeclaration.txt").start();
 
-//		for (RuleViolation ruleViolation : report) {
-//			String message = String.format("%s, %s, %s", ruleViolation.getRule(), ruleViolation.getFilename(),
-//					ruleViolation.getDescription());
-//			System.out.println(DisallowRawTypeDeclarationTest.class.getName() + ": " + message);
-//		}
+		// for (RuleViolation ruleViolation : report) {
+		// String message = String.format("%s, %s, %s", ruleViolation.getRule(),
+		// ruleViolation.getFilename(),
+		// ruleViolation.getDescription());
+		// System.out.println(DisallowRawTypeDeclarationTest.class.getName() + ": " +
+		// message);
+		// }
 
 		Iterator<RuleViolation> iter = report.iterator();
 
@@ -46,19 +48,19 @@ public class DisallowRawTypeDeclarationTest {
 		assertThat(ruleViolation.getRule(), is(instanceOf(DisallowRawTypeDeclaration.class)));
 		assertThat(ruleViolation.getClassName(), is(equalTo("RawTypeDeclaration")));
 		assertThat(ruleViolation.getVariableName(), is("numbers"));
-		assertThat(ruleViolation.getBeginLine(), is(9));
+		assertThat(ruleViolation.getBeginLine(), is(10));
 
 		ruleViolation = iter.next();
 		assertThat(ruleViolation.getRule(), is(instanceOf(DisallowRawTypeDeclaration.class)));
 		assertThat(ruleViolation.getClassName(), is(equalTo("RawTypeDeclaration")));
-		assertThat(ruleViolation.getVariableName(), is("words"));
-		assertThat(ruleViolation.getBeginLine(), is(11));
+		assertThat(ruleViolation.getVariableName(), is("items"));
+		assertThat(ruleViolation.getBeginLine(), is(13));
 
 		ruleViolation = iter.next();
 		assertThat(ruleViolation.getRule(), is(instanceOf(DisallowRawTypeDeclaration.class)));
 		assertThat(ruleViolation.getClassName(), is(equalTo("RawTypeDeclaration")));
 		assertThat(ruleViolation.getVariableName(), is("elements"));
-		assertThat(ruleViolation.getBeginLine(), is(13));
+		assertThat(ruleViolation.getBeginLine(), is(15));
 
 		assertThat(iter.hasNext(), is(false));
 	}

@@ -1,16 +1,19 @@
 import java.util.List;
 import java.util.ArrayList;
+import java.io.File;
 
 public class RawTypeDeclaration {
 
-	static class MyList extends ArrayList<Integer> {}
+	static class MyList extends ArrayList {}
 
 	File file;
 	List numbers;
+	String text;
 
-	public void testMe(List words) throws Exception {
+	public void testMe(List items, String word, int value) throws Exception {
 		MyList myList = new MyList();
 		List elements = new ArrayList();
+		String characters = "test";
 	}
 
 }
