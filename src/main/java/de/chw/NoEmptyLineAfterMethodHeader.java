@@ -17,7 +17,9 @@ package de.chw;
 
 import net.sourceforge.pmd.lang.ast.Node;
 import net.sourceforge.pmd.lang.java.ast.ASTBlock;
+import net.sourceforge.pmd.lang.java.ast.ASTCompilationUnit;
 import net.sourceforge.pmd.lang.java.ast.ASTMethodDeclaration;
+import net.sourceforge.pmd.lang.java.ast.Comment;
 import net.sourceforge.pmd.lang.java.rule.AbstractJavaRule;
 
 public class NoEmptyLineAfterMethodHeader extends AbstractJavaRule {
@@ -33,7 +35,7 @@ public class NoEmptyLineAfterMethodHeader extends AbstractJavaRule {
 		if (numChildren > 0) {
 			Node firstBlockStatement = block.jjtGetChild(0);
 			int lineDiff = firstBlockStatement.getBeginLine() - block.getBeginLine();
-			boolean commentInLine = MyCommentUtil.isCommentInLine(node, block.getBeginLine() + 1);
+			boolean commentInLine = isCommentInLine(node, block.getBeginLine() + 1);
 			if (lineDiff > 1 && !commentInLine) {
 				String fullQualifiedMethodName = node.getMethodName();
 				addViolation(data, node, fullQualifiedMethodName);
@@ -41,6 +43,22 @@ public class NoEmptyLineAfterMethodHeader extends AbstractJavaRule {
 		}
 
 		return super.visit(node, data);
+	}
+
+	/*
+	 * We copied this method from MyCommentUtil since MyCommentUtil is not loaded by
+	 * the class loader from our PMD Eclipse plugin. As long as our
+	 * qa-eclipse-plugin is not able to load referenced (helper) classes from a rule
+	 * class, we use this work-around.
+	 */
+	public static boolean isCommentInLine(final ASTMethodDeclaration node, final int lineNumber) {
+		ASTCompilationUnit compilationUnit = node.getParentsOfType(ASTCompilationUnit.class).get(0);
+		for (Comment comment : compilationUnit.getComments()) {
+			if (comment.getBeginLine() <= lineNumber && lineNumber <= comment.getEndLine()) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }
