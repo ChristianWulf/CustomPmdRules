@@ -35,7 +35,7 @@ public class NoEmptyLineAfterMethodHeader extends AbstractJavaRule {
 		if (numChildren > 0) {
 			Node firstBlockStatement = block.jjtGetChild(0);
 			int lineDiff = firstBlockStatement.getBeginLine() - block.getBeginLine();
-			boolean commentInLine = isCommentInLine(node, block.getBeginLine() + 1);
+			boolean commentInLine = MyCommentUtil.isCommentInLine(node, block.getBeginLine() + 1);
 			if (lineDiff > 1 && !commentInLine) {
 				String fullQualifiedMethodName = node.getMethodName();
 				addViolation(data, node, fullQualifiedMethodName);
@@ -51,7 +51,7 @@ public class NoEmptyLineAfterMethodHeader extends AbstractJavaRule {
 	 * qa-eclipse-plugin is not able to load referenced (helper) classes from a rule
 	 * class, we use this work-around.
 	 */
-	public static boolean isCommentInLine(final ASTMethodDeclaration node, final int lineNumber) {
+	private static boolean isCommentInLine(final ASTMethodDeclaration node, final int lineNumber) {
 		ASTCompilationUnit compilationUnit = node.getParentsOfType(ASTCompilationUnit.class).get(0);
 		for (Comment comment : compilationUnit.getComments()) {
 			if (comment.getBeginLine() <= lineNumber && lineNumber <= comment.getEndLine()) {

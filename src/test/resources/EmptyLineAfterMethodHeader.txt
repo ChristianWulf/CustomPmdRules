@@ -1,0 +1,23 @@
+public class EmptyLineAfterMethodHeader {
+
+	public void lineWithComment() throws Exception {
+		// do nothing
+		System.out.println("");
+	}
+	
+	public void emptyLine() throws Exception {
+		
+		System.out.println("");
+	}
+	
+	public void twoEmptyLines() throws Exception {
+
+	
+		System.out.println("");
+	}
+	
+	public void noEmptyLine() throws Exception {
+		System.out.println("");
+	}
+	
+}
