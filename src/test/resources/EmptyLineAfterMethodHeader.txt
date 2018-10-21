@@ -6,7 +6,7 @@ public class EmptyLineAfterMethodHeader {
 	}
 	
 	public void emptyLine() throws Exception {
-		
+
 		System.out.println("");
 	}
 	
@@ -20,4 +20,16 @@ public class EmptyLineAfterMethodHeader {
 		System.out.println("");
 	}
 	
+	public EmptyLineAfterMethodHeader() {
+
+	}
+
+	public EmptyLineAfterMethodHeader(Integer value) {
+
+		System.out.println("");
+	}
+
+	public EmptyLineAfterMethodHeader(String value) {
+		System.out.println("");
+	}
 }

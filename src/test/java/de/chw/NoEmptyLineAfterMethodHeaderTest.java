@@ -55,6 +55,18 @@ public class NoEmptyLineAfterMethodHeaderTest {
 		assertThat(ruleViolation.getClassName(), is(equalTo("EmptyLineAfterMethodHeader")));
 		assertThat(ruleViolation.getMethodName(), is(equalTo("twoEmptyLines")));
 		assertThat(ruleViolation.getBeginLine(), is(13));
+		
+		ruleViolation = iter.next();
+		assertThat(ruleViolation.getRule(), is(instanceOf(NoEmptyLineAfterMethodHeader.class)));
+		assertThat(ruleViolation.getClassName(), is(equalTo("EmptyLineAfterMethodHeader")));
+		assertThat(ruleViolation.getMethodName(), is(equalTo("EmptyLineAfterMethodHeader")));
+		assertThat(ruleViolation.getBeginLine(), is(23));
+		
+		ruleViolation = iter.next();
+		assertThat(ruleViolation.getRule(), is(instanceOf(NoEmptyLineAfterMethodHeader.class)));
+		assertThat(ruleViolation.getClassName(), is(equalTo("EmptyLineAfterMethodHeader")));
+		assertThat(ruleViolation.getMethodName(), is(equalTo("EmptyLineAfterMethodHeader")));
+		assertThat(ruleViolation.getBeginLine(), is(27));
 
 		assertThat(iter.hasNext(), is(false));
 	}

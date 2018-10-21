@@ -17,6 +17,7 @@ package de.chw;
 
 import net.sourceforge.pmd.lang.java.ast.ASTCompilationUnit;
 import net.sourceforge.pmd.lang.java.ast.ASTMethodDeclaration;
+import net.sourceforge.pmd.lang.java.ast.AbstractJavaAccessNode;
 import net.sourceforge.pmd.lang.java.ast.Comment;
 
 final class MyCommentUtil {
@@ -38,7 +39,7 @@ final class MyCommentUtil {
 		return null;
 	}
 
-	public static boolean isCommentInLine(final ASTMethodDeclaration node, final int lineNumber) {
+	public static boolean isCommentInLine(final AbstractJavaAccessNode node, final int lineNumber) {
 		ASTCompilationUnit compilationUnit = node.getParentsOfType(ASTCompilationUnit.class).get(0);
 		for (Comment comment : compilationUnit.getComments()) {
 			if (comment.getBeginLine() <= lineNumber && lineNumber <= comment.getEndLine()) {

@@ -17,7 +17,10 @@ package de.chw;
 
 import net.sourceforge.pmd.lang.ast.Node;
 import net.sourceforge.pmd.lang.java.ast.ASTBlock;
+import net.sourceforge.pmd.lang.java.ast.ASTBlockStatement;
 import net.sourceforge.pmd.lang.java.ast.ASTCompilationUnit;
+import net.sourceforge.pmd.lang.java.ast.ASTConstructorDeclaration;
+import net.sourceforge.pmd.lang.java.ast.ASTFormalParameters;
 import net.sourceforge.pmd.lang.java.ast.ASTMethodDeclaration;
 import net.sourceforge.pmd.lang.java.ast.Comment;
 import net.sourceforge.pmd.lang.java.rule.AbstractJavaRule;
@@ -26,6 +29,7 @@ public class NoEmptyLineAfterMethodHeader extends AbstractJavaRule {
 
 	public NoEmptyLineAfterMethodHeader() {
 		addRuleChainVisit(ASTMethodDeclaration.class);
+		addRuleChainVisit(ASTConstructorDeclaration.class);
 	}
 
 	@Override
@@ -37,9 +41,33 @@ public class NoEmptyLineAfterMethodHeader extends AbstractJavaRule {
 			int lineDiff = firstBlockStatement.getBeginLine() - block.getBeginLine();
 			boolean commentInLine = MyCommentUtil.isCommentInLine(node, block.getBeginLine() + 1);
 			if (lineDiff > 1 && !commentInLine) {
-				String fullQualifiedMethodName = node.getMethodName();
+				String fullQualifiedMethodName = node.getName();
 				addViolation(data, node, fullQualifiedMethodName);
 			}
+		}
+
+		return super.visit(node, data);
+	}
+
+	@Override
+	public Object visit(ASTConstructorDeclaration node, Object data) {
+		ASTFormalParameters formalParameters = node.getFirstChildOfType(ASTFormalParameters.class);
+		ASTBlockStatement blockStatement = node.getFirstChildOfType(ASTBlockStatement.class);
+		if (blockStatement != null) {
+			int lineDiff = blockStatement.getBeginLine() - formalParameters.getEndLine();
+			boolean commentInLine = MyCommentUtil.isCommentInLine(node, blockStatement.getBeginLine() + 1);
+			if (lineDiff > 1 && !commentInLine) {
+				String fullQualifiedMethodName = node.getImage();
+				addViolation(data, node, fullQualifiedMethodName);
+			}
+		} else {
+			int lineDiff = node.getEndLine() - formalParameters.getEndLine();
+			boolean commentInLine = MyCommentUtil.isCommentInLine(node, formalParameters.getEndLine() + 1);
+			if (lineDiff > 1 && !commentInLine) {
+				String fullQualifiedMethodName = node.getImage();
+				addViolation(data, node, fullQualifiedMethodName);
+			}
+			
 		}
 
 		return super.visit(node, data);
